@@ -67,11 +67,14 @@
   RNSScreenView *screen;
   if (operation == UINavigationControllerOperationPush) {
     if(![toVC.view isKindOfClass:RNSScreenView.class]) {
-     return nil
+      return nil
     }
     screen = (RNSScreenView *) toVC.view;
   } else if (operation == UINavigationControllerOperationPop) {
-   screen = (RNSScreenView *) fromVC.view;
+    if(![fromVC.view isKindOfClass:RNSScreenView.class]) {
+      return nil
+    }
+    screen = (RNSScreenView *) fromVC.view;
   }
   if (screen != nil && screen.stackAnimation != RNSScreenStackAnimationDefault) {
     return  [[RNSScreenStackAnimator alloc] initWithOperation:operation];
