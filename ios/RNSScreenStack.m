@@ -54,7 +54,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-  if (!viewController.view.reactSubviews) break;
+  if (!viewController.view.reactSubviews) return;
   for (NSUInteger i = _reactSubviews.count; i > 0; i--) {
     if ([viewController isEqual:[_reactSubviews objectAtIndex:i - 1].controller]) {
       break;
