@@ -129,7 +129,7 @@
   UINavigationItem *prevItem = currentIndex > 0 ? [navctr.viewControllers objectAtIndex:currentIndex - 1].navigationItem : nil;
 
   BOOL wasHidden = navctr.navigationBarHidden;
-  BOOL shouldHide = config == nil || config.hide;
+  BOOL shouldHide = vc.view.reactSubviews && (config == nil || config.hide);
 
   [navctr setNavigationBarHidden:shouldHide animated:YES];
   navctr.interactivePopGestureRecognizer.enabled = config.gestureEnabled;
