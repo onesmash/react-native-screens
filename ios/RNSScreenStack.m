@@ -54,7 +54,12 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-  if (!viewController.view.reactSubviews) return;
+    for (UIViewController *vc in _controller.viewControllers.reverseObjectEnumerator) {
+        if([vc.view isMemberOfClass:RNSScreenView.class]) {
+            viewController = vc;
+            break;
+        }
+    }
   for (NSUInteger i = _reactSubviews.count; i > 0; i--) {
     if ([viewController isEqual:[_reactSubviews objectAtIndex:i - 1].controller]) {
       break;
