@@ -194,7 +194,7 @@
   UIViewController *lastTop = _controller.viewControllers.lastObject;
   if(![lastTop.view isKindOfClass:RNSScreenView.class]) {
     [_controller pushViewController:top animated:YES];
-    return
+    return;
   }
 
   BOOL shouldAnimate = ((RNSScreenView *) lastTop.view).stackAnimation != RNSScreenStackAnimationNone;
