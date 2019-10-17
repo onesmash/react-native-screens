@@ -195,44 +195,34 @@
 
 - (void)setPushViewControllers:(NSArray<UIViewController *> *)controllers
 {
-  UIViewController *top = controllers.lastObject;
-  UIViewController *lastTop = _controller.viewControllers.lastObject;
-  if(![lastTop.view isKindOfClass:RNSScreenView.class]) {
-    [_controller pushViewController:top animated:YES];
-    return;
-  }
+    UIViewController *top = controllers.lastObject;
+    UIViewController *second = controllers.count - 1 > 0 ? controllers[controllers.count - 2] : nil;
+    UIViewController *lastTop = _controller.viewControllers.lastObject;
+    UIViewController *secondLastTop = nil;
+    [_controller.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIViewController *vc, NSInteger idx, BOOL *stop) {
+        if([vc.view isKindOfClass:RNSScreenView.class] && idx < _controller.viewControllers.count - 1) {
+            secondLastTop = vc;
+            *stop = YES;
+        }
+    }];
 
-  BOOL shouldAnimate = ((RNSScreenView *) lastTop.view).stackAnimation != RNSScreenStackAnimationNone;
+    BOOL shouldAnimate = YES;
+    if([lastTop.view isKindOfClass:RNSScreenView.class]) {
+        shouldAnimate =  ((RNSScreenView *) lastTop.view).stackAnimation != RNSScreenStackAnimationNone;
+    } else if ([secondLastTop.view isKindOfClass:RNSScreenView.class]) {
+        shouldAnimate =  ((RNSScreenView *) secondLastTop.view).stackAnimation != RNSScreenStackAnimationNone;
+    }
 
-  if (_controller.viewControllers.count == 0) {
+    if (_controller.viewControllers.count == 0) {
     // nothing pushed yet
     [_controller setViewControllers:@[top] animated:NO];
-  } else if (top != lastTop) {
-    if (![controllers containsObject:lastTop]) {
-      // last top controller is no longer on stack
-      // in this case we set the controllers stack to the new list with
-      // added the last top element to it and perform (animated) pop
-      NSMutableArray *newControllers = [NSMutableArray arrayWithArray:controllers];
-      [newControllers addObject:lastTop];
-      [_controller setViewControllers:newControllers animated:NO];
-      [_controller popViewControllerAnimated:shouldAnimate];
-    } else if (![_controller.viewControllers containsObject:top]) {
-      // new top controller is not on the stack
-      // in such case we update the stack except from the last element with
-      // no animation and do animated push of the last item
-      NSMutableArray *newControllers = [NSMutableArray arrayWithArray:controllers];
-      [newControllers removeLastObject];
-      [_controller setViewControllers:newControllers animated:NO];
-      [_controller pushViewController:top animated:shouldAnimate];
-    } else {
-      // don't really know what this case could be, but may need to handle it
-      // somehow
-      [_controller setViewControllers:controllers animated:shouldAnimate];
+    } else if (top != lastTop) {
+      if ([_controller.viewControllers containsObject:top]) {
+          [_controller popViewControllerAnimated:shouldAnimate];
+      } else {
+          [_controller pushViewController:top animated:shouldAnimate];
+      }
     }
-  } else {
-    // change wasn't on the top of the stack. We don't need animation.
-    [_controller setViewControllers:controllers animated:NO];
-  }
 }
 
 - (void)updateContainer
