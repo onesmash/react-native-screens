@@ -198,7 +198,7 @@
     UIViewController *top = controllers.lastObject;
     UIViewController *second = controllers.count - 1 > 0 ? controllers[controllers.count - 2] : nil;
     UIViewController *lastTop = _controller.viewControllers.lastObject;
-    UIViewController *secondLastTop = nil;
+    __block UIViewController *secondLastTop = nil;
     [_controller.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIViewController *vc, NSInteger idx, BOOL *stop) {
         if([vc.view isKindOfClass:RNSScreenView.class] && idx < _controller.viewControllers.count - 1) {
             secondLastTop = vc;
