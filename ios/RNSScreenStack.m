@@ -216,8 +216,10 @@
     // nothing pushed yet
     [_controller setViewControllers:@[top] animated:NO];
     } else if (top != lastTop) {
-      if ([_controller.viewControllers containsObject:top]) {
-          [_controller popViewControllerAnimated:shouldAnimate];
+      if([_controller.viewControllers containsObject:top]) {
+          if([lastTop.view isKindOfClass:RNSScreenView.class]) {
+              [_controller popViewControllerAnimated:shouldAnimate];
+          }
       } else {
           [_controller pushViewController:top animated:shouldAnimate];
       }
