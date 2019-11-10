@@ -84,6 +84,9 @@
     [navbar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [navbar setBarTintColor:[UIColor clearColor]];
     hideShadow = YES;
+  } if (hideShadow) {
+    [navbar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [navbar setBarTintColor:config.backgroundColor];
   } else {
     [navbar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [navbar setBarTintColor:config.backgroundColor];

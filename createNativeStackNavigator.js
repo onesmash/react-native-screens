@@ -45,6 +45,7 @@ class StackView extends React.Component {
       gestureEnabled,
       largeTitle,
       translucent,
+      hideShadow,
     } = options;
 
     const scene = {
@@ -67,6 +68,7 @@ class StackView extends React.Component {
       color: headerTintColor,
       gestureEnabled: gestureEnabled === undefined ? true : gestureEnabled,
       largeTitle,
+      hideShadow: hideShadow === undefined ? false : hideShadow,
     };
 
     const hasHeader = headerMode !== 'none' && options.header !== null;
