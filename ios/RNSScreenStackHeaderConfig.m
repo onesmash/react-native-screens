@@ -137,7 +137,9 @@
   [navctr setNavigationBarHidden:shouldHide animated:YES];
   navctr.interactivePopGestureRecognizer.enabled = config.gestureEnabled;
 #ifdef __IPHONE_13_0
-  vc.modalInPresentation = !config.gestureEnabled;
+  if (@available(iOS 13.0, *)) {
+    vc.modalInPresentation = !config.gestureEnabled;
+  }
 #endif
   if (shouldHide) {
     return;
