@@ -199,7 +199,7 @@
     [vc.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
 
     } completion:nil];
-    [vc.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    if(![vc.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
       [self setAnimatedConfig:vc withConfig:config];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
       if ([context isCancelled]) {
@@ -213,7 +213,9 @@
         }
         [self setAnimatedConfig:fromVC withConfig:config];
       }
-    }];
+    }]) {
+      [self setAnimatedConfig:vc withConfig:config];
+    }
   } else {
     [self setAnimatedConfig:vc withConfig:config];
   }
