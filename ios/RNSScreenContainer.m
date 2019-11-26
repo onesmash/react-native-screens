@@ -77,10 +77,13 @@
 
 - (void)attachScreen:(RNSScreenView *)screen
 {
+  [_controller.navigationController.delegate navigationController:_controller.navigationController willShowViewController:screen.controller animated:NO];
   [_controller addChildViewController:screen.controller];
   [_controller.view addSubview:screen.controller.view];
   [screen.controller didMoveToParentViewController:_controller];
+  [_controller.navigationController.delegate navigationController:_controller.navigationController didShowViewController:screen.controller animated:NO];
   [_activeScreens addObject:screen];
+  [_controller.navigationController.parentViewController.navigationController.delegate navigationController:_controller.navigationController.parentViewController.navigationController willShowViewController:_controller.navigationController.parentViewController animated:NO];
 }
 
 - (void)updateContainer
