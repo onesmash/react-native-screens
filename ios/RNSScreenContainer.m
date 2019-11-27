@@ -157,6 +157,25 @@
       break;
     }
   }
+  CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+  if(config.translucent) {
+      UIView *superView = self.superview;
+      superView.frame = CGRectMake(superView.frame.origin.x, superView.frame.origin.y, superView.frame.size.width, screenHeight);
+      self.frame = superView.bounds;
+      UIView *subview = _controller.view.subviews.firstObject;
+      subview.frame = self.bounds;
+  } else {
+      CGFloat navbarOffset = 0;
+      UINavigationController *navctr = _controller.navigationController;
+      CGRect navbarFrame = navctr.navigationBar.frame;
+      navbarOffset = navbarFrame.origin.y + navbarFrame.size.height;
+      UIView *superView = self.superview;
+      superView.frame = CGRectMake(superView.frame.origin.x, superView.frame.origin.y, superView.frame.size.width, screenHeight - navbarOffset);
+      self.frame = superView.bounds;
+      UIView *subview = _controller.view.subviews.firstObject;
+      subview.frame = self.bounds;
+  }
+  [self setNeedsLayout];
   [RNSScreenStackHeaderConfig willShowViewController:_controller.parentViewController withConfig:config];
 }
 
