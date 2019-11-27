@@ -1,5 +1,6 @@
 #import "RNSScreenContainer.h"
 #import "RNSScreen.h"
+#import "RNSScreenStackHeaderConfig.h"
 
 #import <React/RCTUIManager.h>
 #import <React/RCTUIManagerObserverCoordinator.h>
@@ -77,13 +78,10 @@
 
 - (void)attachScreen:(RNSScreenView *)screen
 {
-  [_controller.navigationController.delegate navigationController:_controller.navigationController willShowViewController:screen.controller animated:NO];
   [_controller addChildViewController:screen.controller];
   [_controller.view addSubview:screen.controller.view];
   [screen.controller didMoveToParentViewController:_controller];
-  [_controller.navigationController.delegate navigationController:_controller.navigationController didShowViewController:screen.controller animated:NO];
   [_activeScreens addObject:screen];
-  [_controller.navigationController.parentViewController.navigationController.delegate navigationController:_controller.navigationController.parentViewController.navigationController willShowViewController:_controller.navigationController.parentViewController animated:NO];
 }
 
 - (void)updateContainer
@@ -150,6 +148,16 @@
     // dismiss such a modal (e.g., permission modal or alert)
     [_controller dismissViewControllerAnimated:NO completion:nil];
   }
+
+  UIView *view = _controller.parentViewController.view;
+  RNSScreenStackHeaderConfig *config = nil;
+  for (UIView *subview in view.reactSubviews) {
+    if ([subview isKindOfClass:[RNSScreenStackHeaderConfig class]]) {
+      config = (RNSScreenStackHeaderConfig*) subview;
+      break;
+    }
+  }
+  [RNSScreenStackHeaderConfig willShowViewController:_controller.parentViewController withConfig:config];
 }
 
 - (void)didUpdateReactSubviews

@@ -190,6 +190,8 @@
       case RNSScreenStackHeaderSubviewTypeTitle: {
         subview.translatesAutoresizingMaskIntoConstraints = NO;
         navitem.titleView = subview;
+        [subview setNeedsLayout];
+        [subview layoutIfNeeded];
         break;
       }
     }
