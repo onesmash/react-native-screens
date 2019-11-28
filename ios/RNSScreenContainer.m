@@ -1,6 +1,5 @@
 #import "RNSScreenContainer.h"
 #import "RNSScreen.h"
-#import "RNSScreenStackHeaderConfig.h"
 
 #import <React/RCTUIManager.h>
 #import <React/RCTUIManagerObserverCoordinator.h>
@@ -148,35 +147,6 @@
     // dismiss such a modal (e.g., permission modal or alert)
     [_controller dismissViewControllerAnimated:NO completion:nil];
   }
-
-  UIView *view = _controller.parentViewController.view;
-  RNSScreenStackHeaderConfig *config = nil;
-  for (UIView *subview in view.reactSubviews) {
-    if ([subview isKindOfClass:[RNSScreenStackHeaderConfig class]]) {
-      config = (RNSScreenStackHeaderConfig*) subview;
-      break;
-    }
-  }
-  CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-  if(config.translucent) {
-      UIView *superView = self.superview;
-      superView.frame = CGRectMake(superView.frame.origin.x, superView.frame.origin.y, superView.frame.size.width, screenHeight);
-      self.frame = superView.bounds;
-      UIView *subview = _controller.view.subviews.firstObject;
-      subview.frame = self.bounds;
-  } else {
-      CGFloat navbarOffset = 0;
-      UINavigationController *navctr = _controller.navigationController;
-      CGRect navbarFrame = navctr.navigationBar.frame;
-      navbarOffset = navbarFrame.origin.y + navbarFrame.size.height;
-      UIView *superView = self.superview;
-      superView.frame = CGRectMake(superView.frame.origin.x, superView.frame.origin.y, superView.frame.size.width, screenHeight - navbarOffset);
-      self.frame = superView.bounds;
-      UIView *subview = _controller.view.subviews.firstObject;
-      subview.frame = self.bounds;
-  }
-  [self setNeedsLayout];
-  [RNSScreenStackHeaderConfig willShowViewController:_controller.parentViewController withConfig:config];
 }
 
 - (void)didUpdateReactSubviews
