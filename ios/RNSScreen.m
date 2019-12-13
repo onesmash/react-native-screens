@@ -75,11 +75,19 @@
     navbarOffset = navbarFrame.origin.y + navbarFrame.size.height;
   }
 
-  [_bridge.uiManager
-   setLocalData:[[RNSScreenFrameData alloc]
-                 initWithInsets:UIEdgeInsetsZero
-                 andNavbarOffset:navbarOffset]
-   forView:self];
+  if (navctr && navctr.presentingViewController && navctr.modalPresentationStyle == UIModalPresentationPageSheet) {
+        [_bridge.uiManager
+        setLocalData:[[RNSScreenFrameData alloc]
+                      initWithInsets:UIEdgeInsetsMake(0, 0, navctr.presentingViewController.view.bounds.size.height - self.bounds.size.height, 0)
+                      andNavbarOffset:navbarOffset]
+        forView:self];
+    } else {
+        [_bridge.uiManager
+        setLocalData:[[RNSScreenFrameData alloc]
+                      initWithInsets:UIEdgeInsetsZero
+                      andNavbarOffset:navbarOffset]
+        forView:self];
+    }
 }
 
 - (void)setActive:(BOOL)active

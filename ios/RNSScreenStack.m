@@ -254,6 +254,7 @@
   [super layoutSubviews];
   [self reactAddControllerToClosestParent:_controller];
   _controller.view.frame = self.bounds;
+  _controller.view.frame = _controller.parentViewController.view.bounds;
 }
 
 - (void)dismissOnReload
