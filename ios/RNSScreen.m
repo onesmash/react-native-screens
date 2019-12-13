@@ -76,11 +76,13 @@
   }
 
   if (navctr && navctr.presentingViewController && navctr.modalPresentationStyle == UIModalPresentationPageSheet) {
-        [_bridge.uiManager
-        setLocalData:[[RNSScreenFrameData alloc]
-                      initWithInsets:UIEdgeInsetsMake(0, 0, navctr.presentingViewController.view.bounds.size.height - self.bounds.size.height, 0)
-                      andNavbarOffset:navbarOffset]
-        forView:self];
+      [_bridge.uiManager rootViewForReactTag:self.reactTag withCompletion:^(UIView *rootView) {
+        [self->_bridge.uiManager
+          setLocalData:[[RNSScreenFrameData alloc]
+                        initWithInsets:UIEdgeInsetsMake(0, 0, rootView.bounds.size.height - self.bounds.size.height, 0)
+                        andNavbarOffset:navbarOffset]
+          forView:self];
+      }];
     } else {
         [_bridge.uiManager
         setLocalData:[[RNSScreenFrameData alloc]
