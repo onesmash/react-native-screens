@@ -283,6 +283,7 @@ RCT_ENUM_CONVERTER(RNSScreenStackHeaderSubviewType, (@{
                    initWithHeaderSize:size
                    leftPadding:left rightPadding:right]
      forView:self];
+    self.subviews.firstObject.bounds = self.bounds;
   }
 }
 
